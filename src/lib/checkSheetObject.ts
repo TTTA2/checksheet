@@ -1,36 +1,50 @@
-
-// export type CheckSheetSource = {
-//     items: CheckSheetSourceItem[],
-// }
-
 export type CheckSheetSettings = {
     items: CheckSheetItem[],
 }
 
 export type CheckSheet = {
-    values: CheckSheetItemValue[],
+    items: { [key: string]: CheckSheetItemValue },
 }
 
 export type CheckSheetItem = {
     id: string,
-    text: string,
-    type: "text" | "input" | "checkbox" | "radio", 
-    // children: CheckSheetItem[],
+    type: "text" | "input" | "checklist" | "radio", 
+    text?: string,
+    subItems?: string[],
     parentId?: string,
-    isRequired: boolean,
+    isRequired?: boolean,
 }
 
 export type CheckSheetItemValue = {
-    id: string,
     itemId: string,
-    type: "text" | "input" | "checkbox" | "radio",
-    value: string | Number | { text: string, checked: boolean }[],
+    type: "text" | "input" | "checklist" | "radio",
+    text?: string,
+    states?: { text: string, checked: boolean }[],
+    error?: string,
 }
 
 export const getChildrenItems = (targetParentId: string, items: CheckSheetItem[]) => {
     return items.filter(item => item.parentId == targetParentId);
 }
 
+
+// export type CheckSheetSource = {
+//     items: CheckSheetSourceItem[],
+// }
+
+
+// export type CheckSheetItemValueContainer = {
+//     id: string,
+//     type: "text" | "input" | "checklist" | "radio", 
+//     itemId: string,
+//     values: CheckSheetItemValue[],
+// }
+
+// export type CheckSheetItemValue = {
+//     itemId: string,
+//     type: "text" | "input" | "checkbox" | "radio",
+//     value: string | Number | { text: string, checked: boolean } ,
+// }
 
 // type TextFormat = {
 //     color: string,

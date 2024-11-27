@@ -31,64 +31,100 @@
         {
           id: "c1",
           parentId: "test1",
-          type: "checkbox",
+          subItems: [ "チェック1", "チェック2", "チェック3" ],
+          type: "checklist",
           text: "test2",
           isRequired: false,
         },
 
         {
-          id: "c2",
-          parentId: "test1",
-          type: "checkbox",
-          text: "test2",
-          isRequired: false,
-        },
-
-        {
-          id: "c3",
-          parentId: "test1",
-          type: "checkbox",
-          text: "test2",
+          id: "c1-1",
+          parentId: "c1",
+          type: "input",
+          text: "こんばんは",
           isRequired: false,
         },
 
         {
           id: "r1",
           parentId: "test1",
+          subItems: [ "チェック1", "チェック2", "チェック3" ],
           type: "radio",
           text: "test2",
+          isRequired: true,
+        },
+
+        {
+          id: "test4",
+          // parentId: "test2",
+          type: "input",
+          text: "こんにちは",
           isRequired: false,
         },
 
         {
-          id: "r2",
+          id: "r100",
           parentId: "test1",
-          type: "radio",
-          text: "test2",
-          isRequired: false,
+          subItems: [ "チェック1"],
+          type: "checklist",
+          text: "一戸だけ",
+          isRequired: true,
         },
 
         {
-          id: "r3",
-          parentId: "test1",
+          id: "r100-100",
+          parentId: "r100",
+          type: "input",
+          text: "こんにちはテスト",
+          isRequired: false,
+        },
+       
+        {
+          id: "r100-100-100",
+          parentId: "r100-100",
+          subItems: [ "チェック1"],
+          type: "checklist",
+          text: "一戸だけ",
+          isRequired: true,
+        },
+
+        {
+          id: "r100-100-100-100",
+          parentId: "r100-100-100",
+          subItems: [ "チェック1"],
+          type: "checklist",
+          text: "一戸だけ",
+          isRequired: true,
+        },
+
+        {
+          id: "r23",
+          parentId: "test4",
+          subItems: [ "チェック1", "チェック2", "チェック3" ],
           type: "radio",
           text: "test2",
-          isRequired: false,
-        }
+          isRequired: true,
+        },
 
 
       ]
     };
 
     const sheetValues: CheckSheet = { 
-      values: sheet.items.map(item => (
-        {
-          id: crypto.randomUUID(), 
-          itemId: item.id,
-          type: item.type,
-          value: "",
-        }))
+      items: { },
     };
+
+    // const sheetValues: CheckSheet = { 
+    //   values: sheet.items.map(item => (
+    //     {
+    //       id: crypto.randomUUID(), 
+    //       itemId: item.id,
+    //       type: item.type,
+    //       value: item.type == "" [],
+    //     }))
+    // };
+
+    
 
 </script>
 
