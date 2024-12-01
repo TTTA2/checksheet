@@ -1,13 +1,13 @@
 <script lang="ts">
 
     import CheckForm from "./CheckForm.svelte";
-    import type { CheckSheet, CheckSheetSettings } from "./checkSheetObject";
+    import type { CheckSheetValue, CheckSheetSettings } from "./checkSheetObject";
     
     const {
         checkSheetSetting, sheetValue
     }: {
             checkSheetSetting: CheckSheetSettings 
-            sheetValue: CheckSheet,
+            sheetValue: CheckSheetValue,
     } = $props();
     
 </script>

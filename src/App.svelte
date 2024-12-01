@@ -1,144 +1,135 @@
 <script lang="ts">
-    import CheckFormEditor from "./lib/CheckFormEditor.svelte";
-    import type { CheckSheet, CheckSheetSettings } from "./lib/checkSheetObject";
+	import CheckFormEditor from "./lib/CheckFormEditor.svelte";
+	import {
+		type CheckSheetValue,
+		type CheckSheetSettings,
+		type CheckSheetItem,
+		// CheckSheetItemCollection,
+	} from "./lib/checkSheetObject";
 
+	const items: CheckSheetItem[] = [
+		{
+			id: "test1",
+			type: "text",
+			text: "test",
+			isRequired: false,
+		},
 
-    const sheet: CheckSheetSettings = {
-      items: [
+		{
+			id: "container1",
+			type: "container",
+			text: "チェックボックスリスト",
+			isRequired: true,
+		},
 
-        {
-          id: "test1",
-          type: "text",
-          text: "test",
-          isRequired: false,
-        },
+		{
+			id: "container1_checkbox1",
+			type: "checkbox",
+			parentSubItemId: "container1",
+			text: "チェックボックス1",
+			isRequired: false,
+		},
 
-        {
-          id: "test2",
-          type: "text",
-          text: "test2",
-          isRequired: false,
-        },
+		{
+			id: "container1_checkbox2",
+			type: "checkbox",
+			parentSubItemId: "container1",
+			text: "チェックボックス2",
+			isRequired: false,
+		},
 
-        {
-          id: "test3",
-          parentId: "test2",
-          type: "input",
-          text: "test2",
-          isRequired: false,
-        },
+		{
+			id: "container1_checkbox3",
+			type: "checkbox",
+			parentSubItemId: "container1",
+			text: "チェックボックス3",
+			isRequired: false,
+		},
 
-        {
-          id: "c1",
-          parentId: "test1",
-          subItems: [ "チェック1", "チェック2", "チェック3" ],
-          type: "checklist",
-          text: "test2",
-          isRequired: false,
-        },
+		{
+			id: "container1_radio1",
+			type: "radio",
+			parentSubItemId: "container1",
+			text: "ラジオ1",
+			isRequired: false,
+		},
 
-        {
-          id: "c1-1",
-          parentId: "c1",
-          type: "input",
-          text: "こんばんは",
-          isRequired: false,
-        },
+		{
+			id: "container1_radio2",
+			type: "radio",
+			parentSubItemId: "container1",
+			text: "ラジオ2",
+			isRequired: false,
+		},
 
-        {
-          id: "r1",
-          parentId: "test1",
-          subItems: [ "チェック1", "チェック2", "チェック3" ],
-          type: "radio",
-          text: "test2",
-          isRequired: true,
-        },
+		{
+			id: "container1_input",
+			type: "input",
+			parentId: "container1",
+			// parentSubItemId: "container1",
+			text: "テキスト入力可能",
+			isRequired: false,
+		},
 
-        {
-          id: "test4",
-          // parentId: "test2",
-          type: "input",
-          text: "こんにちは",
-          isRequired: false,
-        },
+		{
+			id: "container1_checkbox1_input1",
+			type: "input",
+			parentId: "container1_checkbox1",
+			text: "テキスト1",
+			isRequired: true,
+		},
 
-        {
-          id: "r100",
-          parentId: "test1",
-          subItems: [ "チェック1"],
-          type: "checklist",
-          text: "一戸だけ",
-          isRequired: true,
-        },
+		{
+			id: "container1_checkbox1_input1_input1",
+			type: "input",
+			parentId: "container1_checkbox1_input1",
+			// parentSubItemId: "container1",
+			text: "テキスト2",
+			isRequired: false,
+		},
 
-        {
-          id: "r100-100",
-          parentId: "r100",
-          type: "input",
-          text: "こんにちはテスト",
-          isRequired: false,
-        },
-       
-        {
-          id: "r100-100-100",
-          parentId: "r100-100",
-          subItems: [ "チェック1"],
-          type: "checklist",
-          text: "一戸だけ",
-          isRequired: true,
-        },
+		{
+			id: "checkbox1",
+			type: "checkbox",
+			// parentSubItemId: "container1",
+			text: "チェックボックスリスト",
+			isRequired: false,
+		},
+	];
 
-        {
-          id: "r100-100-100-100",
-          parentId: "r100-100-100",
-          subItems: [ "チェック1"],
-          type: "checklist",
-          text: "一戸だけ",
-          isRequired: true,
-        },
+	// const sheet: CheckSheetSettings = {
+	// 	items: new CheckSheetItemCollection(
+	// 		items.map((item) => [item.id, item]),
+	// 	),
+	// };
 
-        {
-          id: "r23",
-          parentId: "test4",
-          subItems: [ "チェック1", "チェック2", "チェック3" ],
-          type: "radio",
-          text: "test2",
-          isRequired: true,
-        },
+	const sheet: CheckSheetSettings = {
+		items
+	};
 
+	const sheetValues: CheckSheetValue = {};
 
-      ]
-    };
-
-    const sheetValues: CheckSheet = { 
-      items: { },
-    };
-
-    // const sheetValues: CheckSheet = { 
-    //   values: sheet.items.map(item => (
-    //     {
-    //       id: crypto.randomUUID(), 
-    //       itemId: item.id,
-    //       type: item.type,
-    //       value: item.type == "" [],
-    //     }))
-    // };
-
-    
-
+	// const sheetValues: CheckSheet = {
+	//   values: sheet.items.map(item => (
+	//     {
+	//       id: crypto.randomUUID(),
+	//       itemId: item.id,
+	//       type: item.type,
+	//       value: item.type == "" [],
+	//     }))
+	// };
 </script>
 
 <main>
-  <div class="wh">
-    <CheckFormEditor sheetValue={sheetValues} checkSheetSetting={sheet}></CheckFormEditor>
-  </div>
+	<div class="wh">
+		<CheckFormEditor sheetValue={sheetValues} checkSheetSetting={sheet}
+		></CheckFormEditor>
+	</div>
 </main>
 
 <style>
-
-  .wh {
-    width: 100vw;
-    height: 100vh;
-  }
-
+	.wh {
+		width: 100vw;
+		height: 100vh;
+	}
 </style>
