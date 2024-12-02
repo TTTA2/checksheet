@@ -178,6 +178,14 @@
         return isShowChild;
     }
 
+    const mount = () => {
+        console.log("mount");
+    }
+
+    const dest = () => {
+        console.log("dest");
+    }
+
 </script>
 
 {#snippet fields(fields: CheckSheetItem[], parentItem: CheckSheetItem | undefined )}
@@ -226,7 +234,7 @@
         </field-subitem-container>
 
         {#if isShowChildren(item)}
-            <child-contents>
+            <child-contents onMount={mount} onDestroy={dest}>
                 {@render fields(getChildrenItems(item.id, sheetItems), item)}
             </child-contents>
         {/if}
@@ -279,7 +287,7 @@
         </field-subitem-container>
 
         {#if isShowChildren(item)}
-            <child-contents>
+            <child-contents onMount={mount} onDestroy={dest}>
                 {@render fields(getChildrenItems(item.id, sheetItems), item)}
             </child-contents>
         {/if}
