@@ -95,6 +95,29 @@ const createTreeFromArray = (items: CheckSheetItem[], values: CheckSheetValue): 
 //表示されている項目を配列で返す
 export const getEnabledChidlren = (items: CheckSheetItem[], values: CheckSheetValue) => {
 
+    const visibleValue: { [key: string]: boolean } = {};
+    const topItems = items.filter(item => item.parentId == undefined && item.parentSubItemId == undefined);
+
+    const digItem = (item: CheckSheetItem) => {
+
+        visibleValue[item.id] = true;
+
+        const subItems = getSubItems(item.id, items);
+        subItems.forEach(subItem => digItem(subItem));
+
+        if (item.type == "text") {
+            visibleValue[item.id] = true;
+        }
+        else if (isCompletedItem(item, items, values)) {
+            const children = getChildrenItems(item.id, items);
+            children.forEach(childItem => digItem(childItem));
+        }
+    }
+
+    topItems.forEach(item => digItem(item));
+
+    console.log(visibleValue);
+    
     const a = items.filter(item => {
         
         //最初のアイテムなら表示

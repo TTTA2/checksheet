@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {  unmount } from "svelte";
     import {
         getChildrenItems,
         type CheckSheetValue,
@@ -145,9 +146,9 @@
 
         }
 
-        // const allch = 
+        getEnabledChidlren(sheetItems, sheetValues);
 
-        console.log(item, currentVisible);
+        // const allch = 
 
         // sheetValues[item.id].isVisible = 
 
@@ -185,6 +186,10 @@
     const dest = () => {
         console.log("dest");
     }
+
+    $effect(() => {
+        console.log("teta");
+    });
 
 </script>
 
@@ -234,7 +239,7 @@
         </field-subitem-container>
 
         {#if isShowChildren(item)}
-            <child-contents onMount={mount} onDestroy={dest}>
+            <child-contents>
                 {@render fields(getChildrenItems(item.id, sheetItems), item)}
             </child-contents>
         {/if}
@@ -269,7 +274,7 @@
     <field-content>
         <!-- {@render caption(item)} -->
 
-        <field-subitem-container>
+        <field-subitem-container >
             <label>
                 <input
                     type="checkbox"
@@ -287,7 +292,7 @@
         </field-subitem-container>
 
         {#if isShowChildren(item)}
-            <child-contents onMount={mount} onDestroy={dest}>
+            <child-contents>
                 {@render fields(getChildrenItems(item.id, sheetItems), item)}
             </child-contents>
         {/if}

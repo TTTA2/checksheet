@@ -95,6 +95,15 @@
 			text: "チェックボックスリスト",
 			isRequired: false,
 		},
+
+		{
+			id: "checkbox1_input1",
+			type: "input",
+			parentId: "checkbox1",
+			// parentSubItemId: "container1",
+			text: "入力欄",
+			isRequired: false,
+		},
 	];
 
 	// const sheet: CheckSheetSettings = {
