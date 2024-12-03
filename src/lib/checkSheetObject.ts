@@ -31,6 +31,8 @@ export type CheckSheetItemValue = {
     error?: string,
     isCompleted: boolean,
     isVisible?: boolean,
+
+    strStates?: string[],
 }
 
 export const getParentItem = (chidItem: CheckSheetItem, items: CheckSheetItem[]) => {
@@ -184,6 +186,46 @@ export const isShowChildren = (item: CheckSheetItem, items: CheckSheetItem[], va
 export const isEnabledChildren = (item: CheckSheetItem, items: CheckSheetItem[], values: CheckSheetValue) => {
     return (isCompletedItem(item, items, values)) ?? false;
 }
+
+export const newValueItem = (item: CheckSheetItem): CheckSheetItemValue => {
+
+    if (item.type == "input" || item.type == "radio") return { 
+        itemId: item.id, 
+        type: item.type, 
+        text: "", 
+        isCompleted: false,
+        isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
+    };
+
+    if (item.type == "checkbox") return { 
+        itemId: item.id, 
+        type: item.type, 
+        toggle: false, 
+        isCompleted: false,
+        isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
+    };
+
+    if (item.type == "container") return { 
+        itemId: item.id, 
+        type: item.type, 
+        states: [], 
+        isCompleted: false,
+        isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
+    };
+    
+    return {
+        itemId: item.id, 
+        type: item.type, 
+        isCompleted: false,
+        isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
+    };
+};
+
+export const getState = (item: CheckSheetItem, sheetValues: CheckSheetValue, subItemIndex: number) => {
+    const valueItem = sheetValues[item.id];
+    if (valueItem?.toggle) return valueItem?.toggle;
+    return false;
+};
 
 // export type CheckSheetSource = {
 //     items: CheckSheetSourceItem[],

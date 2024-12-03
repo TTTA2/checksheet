@@ -7,8 +7,9 @@
     let { items } = sheet;
 
     let sh: CheckSheetValue = $state({...sheetValue});
-    let visibleIds: string[] = [];
-  
+
+
+    
     // $inspect({...sh});
     // $inspect({...sh});
 
@@ -38,6 +39,7 @@
 
         console.log(aa);
 
+        sh = {};
     }
 
 
@@ -46,7 +48,7 @@
 <div class={"wh"}>
     
     <flex-box>
-        <CheckFormComponent bind:sheetItems={items} bind:sheetValues={sh} bind:visibleIds={visibleIds}></CheckFormComponent>
+        <CheckFormComponent bind:sheetItems={items} bind:sheetValues={sh}></CheckFormComponent>
     </flex-box>
 
     <div>

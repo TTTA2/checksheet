@@ -11,122 +11,76 @@
         getSubItems,
         getReadyChidlren,
     } from "./checkSheetObject";
+    
+    import CheckFormComponentBase from "./checkForm/components/CheckFormComponentBase.svelte";
 
     let { 
         sheetItems = $bindable(),
         sheetValues = $bindable(),
-        visibleIds = $bindable(), 
-    }: { sheetItems: CheckSheetItem[], sheetValues: CheckSheetValue, visibleIds: string[] } = $props();
+    }: { sheetItems: CheckSheetItem[], sheetValues: CheckSheetValue } = $props();
 
     const topItems = $derived(sheetItems.filter(item => !item.parentId && !item.parentSubItemId));
 
-    const getValue = (item: CheckSheetItem) => {
-        const valueItem = sheetValues[item.id];
-        return valueItem?.text;
-    };
 
-    const getState = (item: CheckSheetItem, subItemIndex: number) => {
-        const valueItem = sheetValues[item.id];
-        if (valueItem?.toggle) return valueItem?.toggle;
-        return false;
-    };
 
-    const newValueItem = (item: CheckSheetItem): CheckSheetItemValue => {
+    // const onInputText = (item: CheckSheetItem, value: string) => {
 
-        if (item.type == "input" || item.type == "radio") return { 
-            itemId: item.id, 
-            type: item.type, 
-            text: "", 
-            isCompleted: false,
-            isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
-        };
+    //     let valueItem = sheetValues[item.id] ? { ...sheetValues[item.id] } : newValueItem(item);
 
-        if (item.type == "checkbox") return { 
-            itemId: item.id, 
-            type: item.type, 
-            toggle: false, 
-            isCompleted: false,
-            isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
-        };
+    //     sheetValues[item.id] = {
+    //         ...valueItem, 
+    //         text: value, 
+    //         isCompleted: isCompletedItem(item), 
+    //     };
+    // };
 
-        if (item.type == "container") return { 
-            itemId: item.id, 
-            type: item.type, 
-            states: [], 
-            isCompleted: false,
-            isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
-        };
+    // const onChangeChecked = (item: CheckSheetItem, value: boolean, container: CheckSheetItem | undefined, checkedIndex: number ) => {
+
+    //     let valueItem = sheetValues[item.id] ? { ...sheetValues[item.id] } : newValueItem(item);
         
-        return {
-            itemId: item.id, 
-            type: item.type, 
-            isCompleted: false,
-            isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
-        };
-    };
+    //     sheetValues[item.id] = {
+    //         ...valueItem, 
+    //         toggle: value, 
+    //         isCompleted: isCompletedItem(item)
+    //     };
 
-    const onInputText = (item: CheckSheetItem, value: string) => {
+    //     if (container) setContainerStates(container, item, value, checkedIndex);
+    // };
 
-        let valueItem = sheetValues[item.id] ? { ...sheetValues[item.id] } : newValueItem(item);
 
-        sheetValues[item.id] = {
-            ...valueItem, 
-            text: value, 
-            isCompleted: isCompletedItem(item), 
-        };
-    };
 
-    const onChangeChecked = (item: CheckSheetItem, value: boolean, container: CheckSheetItem | undefined, checkedIndex: number ) => {
+    // const setContainerValue = (containerItem: CheckSheetItem, subItem: CheckSheetItem, newValue: string, subItemIndex: number ) => {
 
-        let valueItem = sheetValues[item.id] ? { ...sheetValues[item.id] } : newValueItem(item);
-        
-        sheetValues[item.id] = {
-            ...valueItem, 
-            toggle: value, 
-            isCompleted: isCompletedItem(item)
-        };
+    //     let valueItem = sheetValues[containerItem.id] ? { ...sheetValues[containerItem.id] } : newValueItem(containerItem);
 
-        if (container) setContainerStates(container, item, value, checkedIndex);
-    };
+    //     sheetValues[containerItem.id] = {
+    //         ...valueItem,
+    //         text: newValue,
+    //         isCompleted: isCompletedItem(containerItem),
+    //     };
+    // };
 
-    const onSwitch = (item: CheckSheetItem, value: string, container: CheckSheetItem | undefined, checkedIndex: number) => {
+    // const setContainerStates = (containerItem: CheckSheetItem, subItem: CheckSheetItem, newValue: boolean, subItemIndex: number ) => {
 
-        let valueItem = sheetValues[item.id] ? { ...sheetValues[item.id] } : newValueItem(item);
-        sheetValues[item.id] = { ...valueItem, text: value, isCompleted: isCompletedItem(item) };
+    //     let valueItem = sheetValues[containerItem.id] ? { ...sheetValues[containerItem.id] } : newValueItem(containerItem);
 
-        if (item.type == 'radio') {
-            if (container) setContainerValue(container, item, value, checkedIndex);
-        }
-    };
+    //     const { states } = valueItem;
+    //     if (states)
+    //         states[subItemIndex] = {
+    //             text: subItem.text ?? "",
+    //             checked: newValue,
+    //         };
 
-    const setContainerValue = (containerItem: CheckSheetItem, subItem: CheckSheetItem, newValue: string, subItemIndex: number ) => {
+    //     sheetValues[containerItem.id] = {
+    //         ...valueItem,
+    //         states,
+    //         isCompleted: isCompletedItem(containerItem),
+    //     };
+    // };
 
-        let valueItem = sheetValues[containerItem.id] ? { ...sheetValues[containerItem.id] } : newValueItem(containerItem);
-
-        sheetValues[containerItem.id] = {
-            ...valueItem,
-            text: newValue,
-            isCompleted: isCompletedItem(containerItem),
-        };
-    };
-
-    const setContainerStates = (containerItem: CheckSheetItem, subItem: CheckSheetItem, newValue: boolean, subItemIndex: number ) => {
-
-        let valueItem = sheetValues[containerItem.id] ? { ...sheetValues[containerItem.id] } : newValueItem(containerItem);
-
-        const { states } = valueItem;
-        if (states)
-            states[subItemIndex] = {
-                text: subItem.text ?? "",
-                checked: newValue,
-            };
-
-        sheetValues[containerItem.id] = {
-            ...valueItem,
-            states,
-            isCompleted: isCompletedItem(containerItem),
-        };
-    };
+    const st = (item: CheckSheetItem) => {
+        return sheetValues[item.id];
+    }
 
     const onToggleShowChildren = (item: CheckSheetItem) => {
 
@@ -187,9 +141,11 @@
 
 </script>
 
-{#snippet fields(fields: CheckSheetItem[], parentItem: CheckSheetItem | undefined )}
+{#snippet fields(fields: CheckSheetItem[], parentItem: CheckSheetItem | undefined, sheetValues: CheckSheetValue )}
+
     {#each fields as field}
-        {#if field.type == "text"}
+
+        <!-- {#if field.type == "text"}
             {@render text(field, parentItem)}
         {/if}
 
@@ -203,158 +159,56 @@
 
         {#if field.type == "checkbox"}
             {@render checkBoxField(field, parentItem, 0)}
-        {/if}
+        {/if} -->
 
-        {#if field.type == "radio"}
-            {@render radioButtonField(field, parentItem, 0)}
-        {/if}
+
+
 
     {/each}
 {/snippet}
 
-{#snippet text(item: CheckSheetItem, parnetItem: CheckSheetItem | undefined)}
-    <field-content>
-        {@render caption(item)}
-        <child-contents>
-            {@render fields(getChildrenItems(item.id, sheetItems), item)}
-        </child-contents>
-    </field-content>
+
+
+{#snippet radioButtonField(item: CheckSheetItem, parentItem: CheckSheetItem | undefined, subIndex: number, it: CheckSheetValue )}
+
 {/snippet}
 
-{#snippet inputField(item: CheckSheetItem, parnetItem: CheckSheetItem | undefined )}
-    <field-content>
-        {@render caption(item)}
+{#each topItems as item }
+    <CheckFormComponentBase item={item} parentItem={undefined} sheetItems={sheetItems} bind:sheetValues></CheckFormComponentBase>
+{/each}
 
-        <field-subitem-container>
-            <input
-                value={getValue(item)}
-                oninput={(e) => onInputText(item, e.currentTarget.value)}
-            />
-        </field-subitem-container>
-
-        {#if isShowChildren(item)}
-            <child-contents>
-                {@render fields(getChildrenItems(item.id, sheetItems), item)}
-            </child-contents>
-        {/if}
-    </field-content>
-{/snippet}
-
-{#snippet containerField(item: CheckSheetItem, parnetItem: CheckSheetItem | undefined )}
-    <field-content>
-        {@render caption(item)}
-
-        <field-subitem-container>
-            {#each getSubItems(item.id, sheetItems) ?? [] as subItem, index}
-                {#if subItem.type == "checkbox"}
-                    {@render checkBoxField(subItem, item, index)}
-                {/if}
-
-                {#if subItem.type == "radio"}
-                    {@render radioButtonField(subItem, item, index)}
-                {/if}
-            {/each}
-        </field-subitem-container>
-
-        {#if isShowChildren(item)}
-            <child-contents>
-                {@render fields(getChildrenItems(item.id, sheetItems), item)}
-            </child-contents>
-        {/if}
-    </field-content>
-{/snippet}
-
-{#snippet checkBoxField(item: CheckSheetItem, parentItem: CheckSheetItem | undefined, subIndex: number )}
-    <field-content>
-        <!-- {@render caption(item)} -->
-
-        <field-subitem-container >
-            <label>
-                <input
-                    type="checkbox"
-                    checked={getState(item, subIndex)}
-                    onchange={(e) =>
-                        onChangeChecked(
-                            item,
-                            e.currentTarget.checked,
-                            parentItem,
-                            subIndex,
-                        )}
-                />
-                {item.text}
-            </label>
-        </field-subitem-container>
-
-        {#if isShowChildren(item)}
-            <child-contents>
-                {@render fields(getChildrenItems(item.id, sheetItems), item)}
-            </child-contents>
-        {/if}
-    </field-content>
-{/snippet}
-
-{#snippet radioButtonField(item: CheckSheetItem, parentItem: CheckSheetItem | undefined, subIndex: number )}
-    <field-content>
-        <!-- {@render caption(item)} -->
-
-        <field-subitem-container>
-            <label>
-                <input
-                    type="radio"
-                    name={parentItem?.id}
-                    value={parentItem?.text == item.text}
-                    onchange={(e) => onSwitch(item, item.text ?? "", parentItem, subIndex)}
-                />
-                {item.text}
-                {parentItem ? isCompletedItem(parentItem) : ""}
-            </label>
-        </field-subitem-container>
-
-        {#if isShowChildren(item)}
-            <child-contents>
-                {@render fields(getChildrenItems(item.id, sheetItems), item)}
-            </child-contents>
-        {/if}
-    </field-content>
-{/snippet}
-
-{#snippet caption(item: CheckSheetItem)}
-    {#if item.text}
-        <div style:font-weight="bold">
-            {item.text}
-            {@render requiredLabel(item.isRequired)}
-        </div>
-    {/if}
-{/snippet}
-
-{#snippet requiredLabel(state: boolean | undefined)}
-    {#if state}
-        <span style:color="red">*</span>
-    {/if}
-{/snippet}
-
-{@render fields(topItems, undefined)}
+<!-- {@render fields(topItems, undefined, sheetValues)} -->
 
 <style>
 
+.caption {
+    font-weight: bold;
+    padding: 4px 0px;
+}
+
+.label {
+    user-select: none;
+}
 
 field-content {
-        display: flex;
-        flex-direction: column;
-        
-        /* gap: 4px; */
-    }
+    padding: 2px 12px;
 
-    child-contents {
-        /* margin: 4px 0px; */
-        margin-left: 24px;
-    }
+    display: flex;
+    flex-direction: column;
+    
+    /* gap: 4px; */
+}
 
-    field-subitem-container {
-        margin-left: 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
+child-contents {
+    /* margin: 4px 0px; */
+    margin-left: 24px;
+}
+
+field-subitem-container {
+    /* margin-left: 8px; */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
 
 </style>
