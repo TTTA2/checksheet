@@ -9,7 +9,7 @@
         isEnabledChildren as _isEnabledChildren,
         isShowChildren as _isShowChildren,
         getSubItems,
-        getEnabledChidlren,
+        getReadyChidlren,
     } from "./checkSheetObject";
 
     let { 
@@ -74,8 +74,6 @@
             text: value, 
             isCompleted: isCompletedItem(item), 
         };
-
-        onToggleShowChildren(item);
     };
 
     const onChangeChecked = (item: CheckSheetItem, value: boolean, container: CheckSheetItem | undefined, checkedIndex: number ) => {
@@ -89,8 +87,6 @@
         };
 
         if (container) setContainerStates(container, item, value, checkedIndex);
-
-        onToggleShowChildren(item);
     };
 
     const onSwitch = (item: CheckSheetItem, value: string, container: CheckSheetItem | undefined, checkedIndex: number) => {
@@ -101,8 +97,6 @@
         if (item.type == 'radio') {
             if (container) setContainerValue(container, item, value, checkedIndex);
         }
-
-        onToggleShowChildren(item);
     };
 
     const setContainerValue = (containerItem: CheckSheetItem, subItem: CheckSheetItem, newValue: string, subItemIndex: number ) => {
@@ -146,7 +140,7 @@
 
         }
 
-        getEnabledChidlren(sheetItems, sheetValues);
+        getReadyChidlren(sheetItems, sheetValues);
 
         // const allch = 
 

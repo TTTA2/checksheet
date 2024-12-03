@@ -1,7 +1,7 @@
 <script lang="ts">
 
     import CheckFormComponent from './CheckFormComponent.svelte';
-    import { getChildrenItems, type CheckSheetSettings, type CheckSheetItem, type CheckSheetValue, getSubItems, type CheckSheetItemValue, isCompletedItem, getEnabledChidlren } from './checkSheetObject';
+    import { getChildrenItems, type CheckSheetSettings, type CheckSheetItem, type CheckSheetValue, getSubItems, type CheckSheetItemValue, isCompletedItem, getReadyChidlren } from './checkSheetObject';
 
     let { sheet, sheetValue }: { sheet: CheckSheetSettings, sheetValue: CheckSheetValue } = $props();
     let { items } = sheet;
@@ -32,7 +32,12 @@
     // }
 
     const handleClick = () => {
-        console.log(visibleIds);
+        // console.log(visibleIds);
+
+        const aa = getReadyChidlren(items, sh);
+
+        console.log(aa);
+
     }
 
 

@@ -104,6 +104,31 @@
 			text: "入力欄",
 			isRequired: false,
 		},
+
+		{
+			id: "container2",
+			type: "container",
+			parentId: "container1_checkbox2",
+			text: "チェックボックスリスト2",
+			isRequired: true,
+		},
+
+		{
+			id: "container2_checkbox1",
+			type: "checkbox",
+			parentSubItemId: "container2",
+			text: "チェックボックス2_1",
+			isRequired: false,
+		},
+
+		{
+			id: "checkbox2_checkbox1_input1",
+			type: "input",
+			parentId: "container2_checkbox1",
+			// parentSubItemId: "container1",
+			text: "入力欄",
+			isRequired: false,
+		},
 	];
 
 	// const sheet: CheckSheetSettings = {

@@ -93,7 +93,7 @@ const createTreeFromArray = (items: CheckSheetItem[], values: CheckSheetValue): 
 }
 
 //表示されている項目を配列で返す
-export const getEnabledChidlren = (items: CheckSheetItem[], values: CheckSheetValue) => {
+export const getReadyChidlren = (items: CheckSheetItem[], values: CheckSheetValue) => {
 
     const visibleValue: { [key: string]: boolean } = {};
     const topItems = items.filter(item => item.parentId == undefined && item.parentSubItemId == undefined);
@@ -115,120 +115,8 @@ export const getEnabledChidlren = (items: CheckSheetItem[], values: CheckSheetVa
     }
 
     topItems.forEach(item => digItem(item));
-
-    console.log(visibleValue);
     
-    const a = items.filter(item => {
-        
-        //最初のアイテムなら表示
-        if (item.parentId == undefined && item.parentSubItemId == undefined) return true;
-
-        const parentItem = getParentItem(item, items);
-
-        if (parentItem?.type == "container") {
-            if (parentItem?.id == item.parentSubItemId) return true;   
-        }
-
-        if (parentItem) {
-            const completed = isCompletedItem(parentItem, items, values);
-            if (completed) return true;
-        }
-
-        return false;
-    });
-
-    // type _aa = {
-    //     id: string, 
-    //     children: _aa[],
-    // }
-
-    /*
-    木構造
-    表示されているかどうか
-    コンテナ以外
-    ->親が表示されているかどうか
-
-    
-
-
-    */
-
-    const itemTree = createTreeFromArray(items, values);
-
-    const getVisibleChildItem = (treeItem: TreeItem, currentItems: CheckSheetItem[]) => {
-
-        const ditem = getItem(treeItem.id, items);            
-
-        if (ditem) {
-
-            const isCompleted = isCompletedItem(ditem, items, values);
-
-            if (ditem.type == 'container' || isCompleted) {
-                currentItems.push(ditem);
-                treeItem.children.map(_i => getVisibleChildItem(_i, currentItems));
-            }
-            else if (!isCompleted) {
-                
-                const children = getChildSubItems(ditem.id, items);
-                currentItems.push(...children);
-            }
-        }
-
-        return currentItems;
-    } 
-
-    // const aaaa = itemTree.map(_item => {
-
-    //     const aa = getVisibleChildItem(_item, []);
-
-    //     console.log(aa);
-
-    //     // console.log(_item);
-
-    // });
-
-
-    // console.log(itemTree);
-
-    // const b = (tr: _aa[]) => {
-
-    //     const showlist: CheckSheetItem[] = [];
-
-    //     const aa = tr.map(item => {
-
-
-            
-
-    //     });
-    // }
-    
-
-    // console.log(test);
-
-    // console.log(test.map());
-
-    // console.log(items.filter(item => item.parentId == undefined || item.parentSubItemId == undefined)
-    // .map(i => cc(i, items)));
-
-    // const b = items.map()
-
-    // const a = items.filter(item => {
-
-    //     const parentItem = item.parentId != undefined || item.parentSubItemId != undefined 
-    //     ? getParentItem(item, items) 
-    //     : undefined;
-
-    //     // console.log()
-
-    //     return parentItem ? isEnabledChildren(parentItem, items, values) : true;
-    // });
-    
-
-    // console.log(items);
-    // console.log(values);
-    // console.log(a);
-
-    return [];
+    return items.filter(item => visibleValue[item.id]);
 }
 
 export const isOutput = (items: CheckSheetItem[], values: CheckSheetValue) => {
