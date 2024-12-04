@@ -15,7 +15,6 @@
     } from "../../checkSheetObject";
     import Container from "./Container.svelte";
     import RadioButtonGroup from "./ToggleGroup.svelte";
-    import CheckBoxGroup from "./CheckBoxGroup.svelte";
     import ToggleGroup from "./ToggleGroup.svelte";
     import Input from "./Input.svelte";
     import RadioButton from "./RadioButton.svelte";

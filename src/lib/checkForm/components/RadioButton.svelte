@@ -12,6 +12,8 @@ let { item, parentItem, sheetItems, sheetValues = $bindable(), selecterIndex } :
 
 } = $props();
 
+let aa: string[] = $state([]);
+
 const onSwitch = (_item: CheckSheetItem, value: string, container: CheckSheetItem | undefined, checkedIndex: number) => {
 
     let valueItem = sheetValues[_item.id] ? { ...sheetValues[_item.id] } : newValueItem(_item);
@@ -32,12 +34,21 @@ const setContainerValue = (containerItem: CheckSheetItem, subItem: CheckSheetIte
     };
 };
 
+$effect(() => {
+
+    if (Object.keys(sheetValues).length == 0) {
+        aa = [];
+    }
+
+});
+
 </script>
 
 <label class="label">
     <input
     type="radio"
     name={parentItem?.id}
+    bind:group={aa}
     onchange={(e) => onSwitch(item, item.text ?? "", parentItem, selecterIndex)} />
     {item.text}
 </label>
