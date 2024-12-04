@@ -1,54 +1,49 @@
 <script lang="ts">
-
-    import CheckFormComponent from './CheckFormComponent.svelte';
+    import CheckFormComponentBase from './checkForm/components/CheckFormComponent.svelte';
     import { getChildrenItems, type CheckSheetSettings, type CheckSheetItem, type CheckSheetValue, getSubItems, type CheckSheetItemValue, isCompletedItem, getReadyChidlren } from './checkSheetObject';
 
-    let { sheet, sheetValue }: { sheet: CheckSheetSettings, sheetValue: CheckSheetValue } = $props();
-    let { items } = sheet;
+    let {
+        isFullOpen = false,
+        sheet, 
+        sheetValue,
+        onClickComponent,
+        selectedComponentId,
+    }: 
+    {
+        isFullOpen?: boolean,
+        sheet: CheckSheetSettings, 
+        sheetValue: CheckSheetValue,
+        selectedComponentId?: string,
+        onClickComponent?: ((target: CheckSheetItem) => void),
+    } = $props();
 
-    let sh: CheckSheetValue = $state({...sheetValue});
+    let sheetItems = sheet.items;
+    let sheetValues: CheckSheetValue = $state({...sheetValue});
 
-
-    
-    // $inspect({...sh});
-    // $inspect({...sh});
-
-    // $inspect(visibleIds);
-
-
-    // const errorCheck = () => {
-
-    //     items.forEach(item => {
-
-    //         if (item.isRequired || isCompletedItem(item, items, sheet)) {
-    //             // sh.items[item.id]
-    //         }
-
-    //     })
-    // }
-
-    // const handleComplete = () => {
-
-
-    // }
+    const topItems = $derived(sheetItems.filter(item => !item.parentId && !item.parentSubItemId));
 
     const handleClick = () => {
-        // console.log(visibleIds);
 
-        const aa = getReadyChidlren(items, sh);
-
-        console.log(aa);
-
-        sh = {};
+        const aa = getReadyChidlren(sheetItems, sheetValues);
+        console.log(aa, {...sheetValues});
+        sheetValues = {};
     }
-
 
 </script>
 
 <div class={"wh"}>
     
     <flex-box>
-        <CheckFormComponent bind:sheetItems={items} bind:sheetValues={sh}></CheckFormComponent>
+        {#each topItems as item }
+            <CheckFormComponentBase 
+                onClickComponent={onClickComponent}
+                selectedComponentId={selectedComponentId}
+                isFullOpen={isFullOpen} 
+                item={item}
+                parentItem={undefined}
+                sheetItems={sheetItems}
+                bind:sheetValues></CheckFormComponentBase>
+        {/each}
     </flex-box>
 
     <div>

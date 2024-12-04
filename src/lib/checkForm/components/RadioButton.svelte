@@ -52,3 +52,11 @@ $effect(() => {
     onchange={(e) => onSwitch(item, item.text ?? "", parentItem, selecterIndex)} />
     {item.text}
 </label>
+
+<style>
+    
+    .label {
+        user-select: none;
+    }
+
+</style>

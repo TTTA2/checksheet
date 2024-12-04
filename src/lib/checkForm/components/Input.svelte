@@ -13,7 +13,7 @@
 
      const getValue = (item: CheckSheetItem) => {
         const valueItem = sheetValues[item.id];
-        return valueItem?.text;
+        return valueItem?.text ?? "";
     };
 
     const onInputText = (item: CheckSheetItem, value: string) => {
@@ -33,6 +33,8 @@
 
 <style>
 
-
+    input {
+        padding: 8px;
+    }
 
 </style>

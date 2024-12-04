@@ -13,10 +13,6 @@
 
      } = $props();
 
-
-
-
-
 </script>
 
 {#each getSubItems(item.id, sheetItems) as subItem, index }
@@ -29,31 +25,8 @@
         <RadioButton item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues selecterIndex={index}></RadioButton>
     {/if}
 
-
-<!-- 
-    <label class="label">
-        {#if subItem.type == "checkbox"}
-            <input 
-            type="checkbox" 
-            checked={getState(subItem, sheetValues, index)} 
-            onchange={(e) => onChangeChecked(subItem, e.currentTarget.checked, parentItem, index)}/>
-        {/if}
-
-        {#if subItem.type == "radio"}
-            <input
-            type="radio"
-            name={parentItem?.id}
-            onchange={(e) => onSwitch(subItem, subItem.text ?? "", parentItem, index)} />
-        {/if}
-
-        {subItem.text}
-    </label> -->
-
 {/each}
 
-
 <style>
-
-
 
 </style>

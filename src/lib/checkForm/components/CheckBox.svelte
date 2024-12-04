@@ -53,3 +53,9 @@ const setContainerStates = (containerItem: CheckSheetItem, subItem: CheckSheetIt
     onchange={(e) => onChangeChecked(item, e.currentTarget.checked, parentItem, selecterIndex)}/>
     {item.text}
 </label>
+
+<style>    
+    .label {
+        user-select: none;
+    }
+</style>
