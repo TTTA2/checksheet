@@ -40,6 +40,7 @@
         dummyMode?: boolean,
         selectedComponentId?: string,
         onClickComponent?: ((target: CheckSheetItem) => void),
+        
     } = $props();
 
     const isShowChildren = (item: CheckSheetItem) => {
@@ -138,6 +139,7 @@ class:hoverableTarget={hoverd}>
 
             {#if item.type == "container"}
                 <Container 
+                    ele={requiredLabel}
                     selectedComponentId={selectedComponentId}
                     onClickComponent={(_item) => handleSubComponentClick(_item)}
                     isFullOpen={isFullOpen} 

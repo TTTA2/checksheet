@@ -22,7 +22,7 @@
 <column-grid>
 
     <CheckForm sheetValue={sheetValue} sheet={checkSheetSetting}></CheckForm>
-    <!-- <CheckForm selectedComponentId={selectedComponentId} onClickComponent={handleComponentClick} isFullOpen={true} sheetValue={sheetValue} sheet={checkSheetSetting}></CheckForm> -->
+    <CheckForm selectedComponentId={selectedComponentId} onClickComponent={handleComponentClick} isFullOpen={true} sheetValue={sheetValue} sheet={checkSheetSetting}></CheckForm>
     <div>aa</div>
 
 </column-grid>

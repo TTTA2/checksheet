@@ -4,10 +4,6 @@ export type CheckSheetSettings = {
 
 export type CheckSheetValue = { [key: string]: CheckSheetItemValue };
 
-// export class CheckSheetItemCollection extends Map<string, CheckSheetItem> {
-    
-// }
-
 export type CheckSheetItem = {
     id: string,
     type: "text" | "input" | "container" | "checkbox" | "radio", 
@@ -124,16 +120,8 @@ export const getReadyChidlren = (items: CheckSheetItem[], values: CheckSheetValu
 export const isOutput = (items: CheckSheetItem[], values: CheckSheetValue) => {
 
     for (const item of items) {
-
         const value = values[item.id];
-
-
-        // const isDone = (item.isRequired && value.isCompleted)
-        // if (item.isRequired )
-
-
     }
-
 }
 
 export const isCompletedItem = (item: CheckSheetItem, items: CheckSheetItem[], values: CheckSheetValue) => {
@@ -168,9 +156,7 @@ export const isCompletedItem = (item: CheckSheetItem, items: CheckSheetItem[], v
         //チェックボックスを検索
         const checkBoxItems = subItems.filter((subItem) => subItem.type == "checkbox");
         const checkedValues = subItems.filter((subItem) => (values[subItem.id] && values[subItem.id].type == "checkbox" && values[subItem.id].toggle));
-        compChecked = checkBoxItems.length == checkedValues.length;
-
-        
+        compChecked = checkBoxItems.length == checkedValues.length;        
 
         return compChecked && compRadio;
     }
@@ -226,80 +212,3 @@ export const getState = (item: CheckSheetItem, sheetValues: CheckSheetValue, sub
     if (valueItem?.toggle) return valueItem?.toggle;
     return false;
 };
-
-// export type CheckSheetSource = {
-//     items: CheckSheetSourceItem[],
-// }
-
-
-// export type CheckSheetItemValueContainer = {
-//     id: string,
-//     type: "text" | "input" | "checklist" | "radio", 
-//     itemId: string,
-//     values: CheckSheetItemValue[],
-// }
-
-// export type CheckSheetItemValue = {
-//     itemId: string,
-//     type: "text" | "input" | "checkbox" | "radio",
-//     value: string | Number | { text: string, checked: boolean } ,
-// }
-
-// type TextFormat = {
-//     color: string,
-//     bold: boolean,
-//     text: string,
-// }
-
-// type CheckSheetSourceItem = {
-//     id: string,
-//     connections: string[],
-//     text: TextFormat[],
-// }   
-
-// type CheckSheetItem = {
-//     id: string,
-//     type: "text" | "checklist" | "radio",
-//     text: TextFormat[],
-//     checkList?: string[],
-// }
-
-// type CheckSheetValue = {
-//     id: string,
-//     CheckSheetItemId: string,
-//     value: string | Number | { text: string, checked: boolean }[]
-// }
-
-// export class CheckSheet {
-
-//     values: CheckSheetValue[];
-
-//     constructor(source: CheckSheetSource) {
-//         this.values = [];
-//     }
-
-//     static generateCheckSheetItems(sourceItems: CheckSheetSourceItem[]): CheckSheetItem[] {
-
-//         return sourceItems.map(sitem => {
-
-//             return {
-//                 id: sitem.id,
-//                 type: "text",
-//                 text: [
-
-//                 ]
-//             }
-
-//         });
-//     }
-
-//     // static createItemTextFormat()
-
-//     // getChildItems(parentId: string): CheckSheetItem[] {
-
-
-
-//     //     return [];
-//     // }
-
-// }

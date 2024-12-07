@@ -1,5 +1,5 @@
 <script lang="ts">
-
+    import type { Snippet } from "svelte";
     import { getSubItems, isCompletedItem, newValueItem, type CheckSheetItem, type CheckSheetValue } from "../../checkSheetObject";
     import CheckFormComponentBase from "./CheckFormComponent.svelte";
 
@@ -11,6 +11,7 @@
         sheetValues = $bindable(),
         onClickComponent,
         selectedComponentId,
+        ele,
     } : {
         isFullOpen?: boolean,
         item: CheckSheetItem,
@@ -19,6 +20,7 @@
         sheetValues: CheckSheetValue,        
         onClickComponent?: ((target: CheckSheetItem) => void),
         selectedComponentId?: string,
+        ele?: Snippet<any>,
      } = $props();
 
      const handleComponentClick = (_item: CheckSheetItem) => {

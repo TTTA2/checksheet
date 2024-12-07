@@ -15,6 +15,7 @@
         sheetValue: CheckSheetValue,
         selectedComponentId?: string,
         onClickComponent?: ((target: CheckSheetItem) => void),
+        
     } = $props();
 
     let sheetItems = sheet.items;
