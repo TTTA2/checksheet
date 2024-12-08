@@ -19,11 +19,11 @@
 {#each getSubItems(item.id, sheetItems) as subItem, index }
 
     {#if subItem.type == "checkbox"}
-        <CheckBox item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues selecterIndex={index}></CheckBox>
+        <CheckBox item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues></CheckBox>
     {/if}
 
-    {#if subItem.type == "radio"}
-        <RadioButton item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues selecterIndex={index}></RadioButton>
+    {#if subItem.type == "radioButton"}
+        <RadioButton item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues></RadioButton>
     {/if}
 
 {/each}

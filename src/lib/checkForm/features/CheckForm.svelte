@@ -19,9 +19,11 @@
 
     let sheetItems = $derived(sheet.items);
     //一番上の項目だけを取得する
-    const topItems = $derived(sheetItems.filter(item => !item.parentId && !item.parentSubItemId));
+    const topItems = $derived(sheetItems.filter(item => !item.parentId));
 
     let sheetValues: CheckSheetValue = $state({...sheetValue});
+
+    $inspect(sheetValues);
 
     const handleClick = () => {
         const aa = getReadyChidlren(sheetItems, sheetValues);

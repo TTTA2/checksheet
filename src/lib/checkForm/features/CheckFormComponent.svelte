@@ -1,13 +1,14 @@
 <script lang="ts">
     import CheckFormComponentBase from "./CheckFormComponent.svelte";
-    import { getChildrenItems } from "../checkSheetObject";
+    import { getChildrenItems, getChildSubItems } from "../checkSheetObject";
 
-    import Container from "./Container.svelte";
+    import Container from "../components/default/Container.svelte";
     import Input from "../components/default/Input.svelte";
     import RadioButton from "../components/default/RadioButton.svelte";
     import CheckBox from "../components/default/CheckBox.svelte";
     import type { Snippet } from "svelte";
     import type { CheckSheetItem, CheckSheetValue } from "../types/types";
+    import Multiline from "../components/default/Multiline.svelte";
 
     export type ItemProperty = {
         isExpand: ((currentItem: CheckSheetItem) => boolean) | boolean,
@@ -35,9 +36,9 @@
 </script>
 
 {#snippet caption(item: CheckSheetItem)}
-    {#if item.text}
+    {#if item.name}
         <div class="flex_colmun caption label">
-            <div>{item.text}</div>
+            <div>{item.name}</div>
             {@render requiredLabel(item.isRequired)}
         </div>
     {/if}
@@ -51,7 +52,7 @@
 
 <!-- キャプションなどヘッダー部分のスニペット -->
 {#snippet head(item: CheckSheetItem, isExpand: ((currentItem: CheckSheetItem) => boolean) | boolean, parentItem?: CheckSheetItem)}
-    {#if item.type == "container" || item.type == "text" || item.type == "input"}
+    {#if item.type == "container" || item.type == "label" || item.type == "textbox"}
         {@render caption(item)}
     {/if}
 {/snippet}
@@ -64,28 +65,50 @@
             <Container isExpand={isExpand} wrapper={wrapper} item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues></Container>
         {/if}
 
-        {#if item.type == "radio"}
-            <RadioButton item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues selecterIndex={0}></RadioButton>
+        {#if item.type == "radioButton"}
+            <RadioButton item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues></RadioButton>
         {/if}
 
         {#if item.type == "checkbox"}
-            <CheckBox item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues selecterIndex={0}></CheckBox>
+            <CheckBox item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues></CheckBox>
         {/if}
 
-        {#if item.type == "input"}
+        {#if item.type == "textbox"}
             <Input item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues />
         {/if}
+
+        {#if item.type == "textarea"}
+            <Multiline item={item} parentItem={parentItem} sheetItems={sheetItems} bind:sheetValues />
+        {/if}
+
     </field-subitem-container>
 
 {/snippet}
 
 <!-- 単一項目のチェックが完了した際に展開する子のコンポーネントのスニペット -->
-{#snippet cihldrenComponent(item: CheckSheetItem, isExpand: ((currentItem: CheckSheetItem) => boolean) | boolean, parentItem?: CheckSheetItem)}
+{#snippet subItemsComponent(item: CheckSheetItem, isExpand: ((currentItem: CheckSheetItem) => boolean) | boolean)}
+    <!-- <child-wrapper class:open={typeof(isExpand) == "boolean" ? isExpand : isExpand(item)}></child-wrapper> -->
+        {#each getChildSubItems(item.id, sheetItems) as subItem }
+            <child-contents>
+                <CheckFormComponentBase 
+                    itemProperty={{item: subItem, parentItem: item, isExpand}}
+                    bind:sheetItems={sheetItems} 
+                    bind:sheetValues={sheetValues} 
+                    wrapper={wrapper}
+                    overrideBody={overrideBody}
+                    ></CheckFormComponentBase>
+            </child-contents>
+        {/each}
+    <!-- </child-wrapper> -->
+{/snippet}
+
+<!-- 単一項目のチェックが完了した際に展開する子のコンポーネントのスニペット -->
+{#snippet childrenComponent(item: CheckSheetItem, isExpand: ((currentItem: CheckSheetItem) => boolean) | boolean)}
     <child-wrapper class:open={typeof(isExpand) == "boolean" ? isExpand : isExpand(item)}>
         {#each getChildrenItems(item.id, sheetItems) as child }
             <child-contents>
                 <CheckFormComponentBase 
-                    itemProperty={{item: child, parentItem, isExpand}}
+                    itemProperty={{item: child, parentItem: item, isExpand}}
                     bind:sheetItems={sheetItems} 
                     bind:sheetValues={sheetValues} 
                     wrapper={wrapper}
@@ -98,35 +121,22 @@
 
 <!-- 単一チェック項目全体のスニペット -->
 {#snippet content(prop: ItemProperty)}
-    <field-content>
+    <field-content class:shift={!prop.item.isHiddenCaption}>
 
-        {@render head(prop.item, prop.isExpand, prop.parentItem)}
-        
+        {#if !prop.item.isHiddenCaption} 
+            {@render head(prop.item, prop.isExpand, prop.parentItem)}
+        {/if}
+
         {#if overrideBody}
             <field-subitem-container>
-
-                <!-- コンテナだけはオーバーライドしても通常の描画を行う -->
-                {#if prop.item.type == "container"}
-
-                    <Container
-                        isExpand={prop.isExpand}
-                        wrapper={wrapper} 
-                        overrideItemBody={overrideBody}
-                        item={prop.item}
-                        parentItem={prop.parentItem}
-                        sheetItems={sheetItems}
-                        bind:sheetValues></Container>
-
-                {:else}
-                    {@render overrideBody({property: prop})}
-                {/if}
-
+                {@render overrideBody({property: prop})}
             </field-subitem-container>
         {:else}
             {@render body(prop.item, prop.isExpand, prop.parentItem)}
         {/if}
 
-        {@render cihldrenComponent(prop.item, prop.isExpand, prop.parentItem)}
+        {@render subItemsComponent(prop.item, prop.isExpand)}
+        {@render childrenComponent(prop.item, prop.isExpand)}
 
     </field-content>
 {/snippet}
@@ -173,9 +183,13 @@
     }
 
     field-content {
-        padding: 2px 12px;
+        padding: 2px 0px;
         display: flex;
         flex-direction: column;
+    }
+
+    field-content.shift {
+        padding-left: 12px;
     }
 
     child-wrapper {

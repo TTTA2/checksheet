@@ -1,46 +1,26 @@
 <script lang="ts">
 
-import { getState, getSubItems, isCompletedItem, newValueItem } from "../../checkSheetObject";
+import { getState, getSubItems, isCompletedItem, newValueItem, RandomParentId, setChangeSelectState } from "../../checkSheetObject";
 import type { CheckSheetItem, CheckSheetValue } from "../../types/types";
 
-let { item, parentItem, sheetItems, sheetValues = $bindable(), selecterIndex } : 
+let { item, parentItem, sheetItems, sheetValues = $bindable() } : 
 {
     item: CheckSheetItem,
     parentItem: CheckSheetItem | undefined,
     sheetItems: CheckSheetItem[],
     sheetValues: CheckSheetValue,
-    selecterIndex: number,
-
 } = $props();
 
 let aa: string[] = $state([]);
 
-const onSwitch = (_item: CheckSheetItem, value: string, container: CheckSheetItem | undefined, checkedIndex: number) => {
-
-    let valueItem = sheetValues[_item.id] ? { ...sheetValues[_item.id] } : newValueItem(_item);
-    sheetValues[_item.id] = { ...valueItem, text: value, isCompleted: isCompletedItem(_item, sheetItems, sheetValues) };
-
-    if (_item.type == 'radio') {
-        if (container) setContainerValue(container, _item, value, checkedIndex);
-    }
-};
-
-const setContainerValue = (containerItem: CheckSheetItem, subItem: CheckSheetItem, newValue: string, subItemIndex: number ) => {
-    let valueItem = sheetValues[containerItem.id] ? { ...sheetValues[containerItem.id] } : newValueItem(containerItem);
-
-    sheetValues[containerItem.id] = {
-        ...valueItem,
-        text: newValue,
-        isCompleted: isCompletedItem(containerItem, sheetItems, sheetValues),
-    };
+const onSwitch = (_item: CheckSheetItem, value: string) => {
+    sheetValues = setChangeSelectState(true, _item, sheetItems, sheetValues);
 };
 
 $effect(() => {
-
     if (Object.keys(sheetValues).length == 0) {
         aa = [];
     }
-
 });
 
 </script>
@@ -48,11 +28,11 @@ $effect(() => {
 <label class="label">
     <input
     type="radio"
-    name={parentItem?.id}
+    name={parentItem?.id ?? RandomParentId}
     bind:group={aa}
-    onchange={(e) => onSwitch(item, item.text ?? "", parentItem, selecterIndex)} />
-    {item.text}
-    {parentItem?.id}
+    onchange={(e) => onSwitch(item, item.name ?? "")} />
+    {item.name}
+    {item.parentId}
 </label>
 
 <style>

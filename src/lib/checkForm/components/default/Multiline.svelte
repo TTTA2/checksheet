@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { getState, getSubItems, isCompletedItem, newValueItem } from "../../checkSheetObject";
+    import { isCompletedItem, newValueItem } from "../../checkSheetObject";
     import type { CheckSheetItem, CheckSheetValue } from "../../types/types";
 
     let { item, parentItem, sheetItems, sheetValues = $bindable() } : 
@@ -30,12 +30,17 @@
 
 </script>
 
-<input placeholder={item.placeHolder ?? ""} value={getValue(item)} oninput={(e) => onInputText(item, e.currentTarget.value)}/>
+<textarea placeholder={item.placeHolder ?? ""} value={getValue(item)} oninput={(e) => onInputText(item, e.currentTarget.value)}></textarea>
 
 <style>
 
-    input {
+    .linenumber {
+        counter-reset: none;
+    }
+
+    textarea {
         padding: 8px;
+        resize: vertical;
     }
 
 </style>
