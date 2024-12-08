@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CheckSheetItem } from '../../../checkSheetObject';
+    import type { CheckSheetItem } from '../../../types/types';
 
     let {
         targetItem,
@@ -72,9 +72,5 @@
         height: 12px;
         border-radius: 12px;
     }
-
-    .active {
-        border: 2px gray dashed;
-    }
-
+    
 </style>

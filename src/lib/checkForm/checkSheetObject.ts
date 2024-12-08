@@ -1,35 +1,4 @@
-export type CheckSheetSettings = {
-    items: CheckSheetItem[],
-}
-
-export type CheckSheetValue = { [key: string]: CheckSheetItemValue };
-
-export type CheckSheetItem = {
-    id: string,
-    type: "text" | "input" | "container" | "checkbox" | "radio", 
-    text?: string,
-    parentId?: string,
-    parentSubItemId?: string,
-    isRequired?: boolean,
-}
-
-export type SubItem = {
-    id: string,
-    text: string,
-}
-
-export type CheckSheetItemValue = {
-    itemId: string,
-    type: "text" | "input" | "container" | "checkbox" | "radio",
-    text?: string,
-    toggle?: boolean,
-    states?: { text: string, checked: boolean }[],
-    error?: string,
-    isCompleted: boolean,
-    isVisible?: boolean,
-
-    strStates?: string[],
-}
+import type { CheckSheetItem, CheckSheetValue, CheckSheetItemValue } from "./types/types";
 
 export const getParentItem = (chidItem: CheckSheetItem, items: CheckSheetItem[]) => {
     return items.find(parent => parent.id == chidItem.parentId || parent.id == chidItem.parentSubItemId);
@@ -128,17 +97,23 @@ export const isCompletedItem = (item: CheckSheetItem, items: CheckSheetItem[], v
 
     const valueItem = values[item.id];
 
+    // console.log({...item});
+
+    if (item.text == "テキスト1") {
+        console.log({...valueItem});
+    }
+
     if (!valueItem) return false;
 
-    if (valueItem.type == "input" || valueItem.type == "radio") {
+    if (item.type == "input" || item.type == "radio") {
         return (valueItem.text?.length ?? 0) > 0;
     }
 
-    if (valueItem.type == "checkbox") {
+    if (item.type == "checkbox") {
         return valueItem.toggle ?? false;
     }
 
-    if (valueItem.type == "container") {
+    if (item.type == "container") {
 
         //チェックボックスとラジオボタンを検索
         const subItems = getSubItems(item.id, items);
@@ -155,7 +130,7 @@ export const isCompletedItem = (item: CheckSheetItem, items: CheckSheetItem[], v
 
         //チェックボックスを検索
         const checkBoxItems = subItems.filter((subItem) => subItem.type == "checkbox");
-        const checkedValues = subItems.filter((subItem) => (values[subItem.id] && values[subItem.id].type == "checkbox" && values[subItem.id].toggle));
+        const checkedValues = subItems.filter((subItem) => (values[subItem.id] && subItem.type == "checkbox" && values[subItem.id].toggle));
         compChecked = checkBoxItems.length == checkedValues.length;        
 
         return compChecked && compRadio;
@@ -177,7 +152,7 @@ export const newValueItem = (item: CheckSheetItem): CheckSheetItemValue => {
 
     if (item.type == "input" || item.type == "radio") return { 
         itemId: item.id, 
-        type: item.type, 
+        // type: item.type, 
         text: "", 
         isCompleted: false,
         isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
@@ -185,7 +160,7 @@ export const newValueItem = (item: CheckSheetItem): CheckSheetItemValue => {
 
     if (item.type == "checkbox") return { 
         itemId: item.id, 
-        type: item.type, 
+        // type: item.type, 
         toggle: false, 
         isCompleted: false,
         isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
@@ -193,7 +168,7 @@ export const newValueItem = (item: CheckSheetItem): CheckSheetItemValue => {
 
     if (item.type == "container") return { 
         itemId: item.id, 
-        type: item.type, 
+        // type: item.type, 
         states: [], 
         isCompleted: false,
         isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
@@ -201,7 +176,7 @@ export const newValueItem = (item: CheckSheetItem): CheckSheetItemValue => {
     
     return {
         itemId: item.id, 
-        type: item.type, 
+        // type: item.type, 
         isCompleted: false,
         isVisible: item.parentId == undefined && item.parentSubItemId == undefined,
     };

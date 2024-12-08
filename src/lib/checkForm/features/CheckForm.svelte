@@ -1,47 +1,47 @@
 <script lang="ts">
-    import CheckFormComponentBase from './checkForm/components/CheckFormComponent.svelte';
-    import { getChildrenItems, type CheckSheetSettings, type CheckSheetItem, type CheckSheetValue, getSubItems, type CheckSheetItemValue, isCompletedItem, getReadyChidlren } from './checkSheetObject';
+    import type { Snippet } from 'svelte';
+    import CheckFormComponentBase, { type OverrideComponent, type WrapperComponent } from './CheckFormComponent.svelte';
+    import { getReadyChidlren, isShowChildren } from '../checkSheetObject';
+    import type { CheckSheetSettings, CheckSheetValue, CheckSheetItem } from '../types/types';
 
     let {
-        isFullOpen = false,
         sheet, 
         sheetValue,
-        onClickComponent,
-        selectedComponentId,
+        itemComponentWrapper,
+        overrideItemBody,
     }: 
     {
-        isFullOpen?: boolean,
         sheet: CheckSheetSettings, 
         sheetValue: CheckSheetValue,
-        selectedComponentId?: string,
-        onClickComponent?: ((target: CheckSheetItem) => void),
-        
+        itemComponentWrapper?: Snippet<[WrapperComponent]>,
+        overrideItemBody?: Snippet<[OverrideComponent]>,
     } = $props();
 
-    let sheetItems = sheet.items;
-    let sheetValues: CheckSheetValue = $state({...sheetValue});
-
+    let sheetItems = $derived(sheet.items);
+    //一番上の項目だけを取得する
     const topItems = $derived(sheetItems.filter(item => !item.parentId && !item.parentSubItemId));
 
-    const handleClick = () => {
+    let sheetValues: CheckSheetValue = $state({...sheetValue});
 
+    const handleClick = () => {
         const aa = getReadyChidlren(sheetItems, sheetValues);
         console.log(aa, {...sheetValues});
         sheetValues = {};
     }
 
+    const isExpand = (currentItem: CheckSheetItem) => isShowChildren(currentItem, sheetItems, sheetValues);
+
 </script>
+
 
 <div class={"wh"}>
     
     <flex-box>
         {#each topItems as item }
             <CheckFormComponentBase 
-                onClickComponent={onClickComponent}
-                selectedComponentId={selectedComponentId}
-                isFullOpen={isFullOpen} 
-                item={item}
-                parentItem={undefined}
+                itemProperty={{ item, parentItem: undefined, isExpand }}
+                overrideBody={overrideItemBody}
+                wrapper={itemComponentWrapper}
                 sheetItems={sheetItems}
                 bind:sheetValues></CheckFormComponentBase>
         {/each}
@@ -78,3 +78,4 @@
     }
 
 </style>
+

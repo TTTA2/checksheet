@@ -1,13 +1,8 @@
 <script lang="ts">
-	import CheckFormEditor from "./lib/CheckFormEditor.svelte";
-	import {
-		type CheckSheetValue,
-		type CheckSheetSettings,
-		type CheckSheetItem,
-		// CheckSheetItemCollection,
-	} from "./lib/checkSheetObject";
+	import CheckFormEditor from "./lib/checkForm/features/CheckFormEditor.svelte";
+    import type { CheckSheetItem, CheckSheetSettings, CheckSheetValue } from "./lib/checkForm/types/types";
 
-	const items: CheckSheetItem[] = [
+	let items: CheckSheetItem[] = [
 		{
 			id: "test1",
 			type: "text",
@@ -81,10 +76,21 @@
 
 		{
 			id: "container1_checkbox1_input1_input1",
-			type: "input",
-			parentId: "container1_checkbox1_input1",
+			type: "radio",
+			parentSubItemId: "container1_checkbox1_input1",
+			// parentId: "container1_checkbox1_input1",
 			// parentSubItemId: "container1",
 			text: "テキスト2",
+			isRequired: false,
+		},
+
+		{
+			id: "container1_checkbox1_input1_input2",
+			type: "radio",
+			parentSubItemId: "container1_checkbox1_input1",
+			// parentId: "container1_checkbox1_input1",
+			// parentSubItemId: "container1",
+			text: "テキスト3",
 			isRequired: false,
 		},
 
@@ -137,9 +143,7 @@
 	// 	),
 	// };
 
-	const sheet: CheckSheetSettings = {
-		items
-	};
+	let sheet: CheckSheetSettings = $state({items});
 
 	const sheetValues: CheckSheetValue = {};
 
@@ -156,8 +160,7 @@
 
 <main>
 	<div class="wh">
-		<CheckFormEditor sheetValue={sheetValues} checkSheetSetting={sheet}
-		></CheckFormEditor>
+		<CheckFormEditor sheetValue={sheetValues} bind:checkSheetSetting={sheet}></CheckFormEditor>
 	</div>
 </main>
 

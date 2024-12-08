@@ -1,6 +1,7 @@
 <script lang="ts">
 
-import { getState, getSubItems, isCompletedItem, newValueItem, type CheckSheetItem, type CheckSheetValue } from "../../checkSheetObject";
+import { getState, getSubItems, isCompletedItem, newValueItem } from "../../checkSheetObject";
+import type { CheckSheetItem, CheckSheetValue } from "../../types/types";
 
 let { item, parentItem, sheetItems, sheetValues = $bindable(), selecterIndex } : 
 {
@@ -51,6 +52,7 @@ $effect(() => {
     bind:group={aa}
     onchange={(e) => onSwitch(item, item.text ?? "", parentItem, selecterIndex)} />
     {item.text}
+    {parentItem?.id}
 </label>
 
 <style>

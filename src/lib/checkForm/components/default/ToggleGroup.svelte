@@ -1,6 +1,7 @@
 <script lang="ts">
 
-    import { getState, getSubItems, isCompletedItem, newValueItem, type CheckSheetItem, type CheckSheetValue } from "../../checkSheetObject";
+    import { getState, getSubItems, isCompletedItem, newValueItem } from "../../checkSheetObject";
+    import type { CheckSheetItem, CheckSheetValue } from "../../types/types";
     import CheckBox from "./CheckBox.svelte";
     import RadioButton from "./RadioButton.svelte";
 
